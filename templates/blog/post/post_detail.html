@@ -1,6 +1,8 @@
 {% extends "base.html" %}
 {% load static %}
 {% load crispy_forms_tags %}
+{% load social_share %}
+{% load blog_tags %}
 
 {% block title %}{{ post.title }}{{ block.super }}{% endblock %}
 
@@ -33,8 +35,9 @@
                                         <div class="views">
                                             <i class="icon-eye"></i> 500
                                         </div>
+                                        {% total_comments post.id as all_comments %}
                                         <div class="comments meta-last">
-                                            <i class="icon-comment"></i>12
+                                            <i class="icon-comment"></i>{{ all_comments }}
                                         </div>
                                     </div>
                                 </div>
@@ -49,27 +52,44 @@
                                             <cite title="Source Title">Source Title</cite>
                                         </footer>
                                     </blockquote>
-                                    {% lorem 3 p %}
+                                    {% lorem 2 p %}
                                 </div>
                                 <div class="post-tags">
                                     {% for tag in post.tags.all %}
                                     <a href="#" class="tag">{{ tag }}</a>
                                     {% endfor %}
                                 </div>
-                                <a href="{% url 'blog:share_post' post.slug %}" class="text-primary">Share via email</a>
+                                <div class="mt-2 d-flex justify-content-between">
+                                    <h5 class="text-primary">
+                                Share via</h5>
+                                    <ul class="social-menu">
+                                        <li class="list-inline-item">
+                                            {% post_to_facebook object_or_url '<i class="fa fa-facebook share-facebook"></i>' %}
+                                        </li>
+                                        <li class="list-inline-item">
+                                            {% post_to_twitter '{{ post.title }}. Check it out!' object_or_url '<i class="fa fa-twitter"></i>' %}
+                                        </li>
+                                        <li class="list-inline-item">
+                                            {% post_to_whatsapp object_or_title '<i class="fa fa-whatsapp"></i>' %}
+                                        </li>
+                                        <li class="list-inline-item">
+                                            <a href="{% url 'blog:share_post' post.slug %}"><i class="fa fa-envelope"></i></a>
+                                        </li>
+                                    </ul>
+                                </div>
                                 <div class="posts-nav d-flex justify-content-between align-items-stretch flex-column flex-md-row">
-                                    <a href="#" class="prev-post text-left d-flex align-items-center"> <div class="icon prev">
+                                    {% for post in similar_posts %}
+                                    <a href="{{ post.get_absolute_url }}" class="prev-post text-left d-flex align-items-center">   <div class="icon prev">
                                             <i class="fa fa-angle-left"></i>
-                                        </div> <div class="text">
-                                            <strong class="text-primary">Previous Post </strong>
-                                            <h6>I Bought a Wedding Dress.</h6>
-                                        </div></a>
-                                    <a href="#" class="next-post text-right d-flex align-items-center justify-content-end"> <div class="text">
-                                            <strong class="text-primary">Next Post </strong>
-                                            <h6>I Bought a Wedding Dress.</h6>
-                                        </div> <div class="icon next">
-                                            <i class="fa fa-angle-right"> </i>
-                                        </div></a>
+                                        </div> 
+                                        
+                                        <div class="text">
+                                            
+                                            <h6>{{ post.title }}</h6>
+                                            <strong class="text-primary"> By {{ post.author }} </strong>
+                                        </div>
+                                    </a>
+                                    {% endfor %}
                                 </div>
                                 <div class="post-comments">
                                     {% with comments.count as total_comments %}
@@ -78,7 +98,7 @@
                                     </header>
                                     {% endwith %}
                                     {% for comment in comments %}
-                                    <div class="comment shadow p-2 mt-5">
+                                    <div class="comment shadow-sm p-2 mt-5">
                                         <div class="comment-header d-flex justify-content-between">
                                             <div class="user d-flex align-items-center">
                                                 <div class="image">
@@ -92,7 +112,6 @@
                                         </div>
                                         <div class="comment-body">
                                             <p>{{ comment.body }}.</p>
-                                            {% lorem 1 p %}
                                         </div>
                                     </div>
                                     {% endfor %}

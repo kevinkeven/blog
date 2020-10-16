@@ -6,6 +6,7 @@ from django.db.models import Count
 import time
 from django.core.mail import send_mail
 from django.views import generic
+from django.contrib.postgres.search import SearchVector, SearchRank, SearchQuery
 
 # Create your views here.
 class PostListView(generic.ListView):
@@ -83,3 +84,20 @@ class ContactUsView(generic.TemplateView, generic.FormView):
         ctx = super().get_context_data(**kwargs)
         ctx['sent'] = self.sent
         return ctx
+
+class SearchView(generic.View):
+    def get(self, request, *args, **kwargs):
+        queryset = Post.published.all()
+        query = request.GET.get('q')
+        if query:
+            queryset = queryset.filter(
+                Q(title__icontains=query) |
+                Q(overview__icontains=query)                
+            ).distinct()
+        
+        context = {
+            'result': queryset,
+            'query': query
+        }
+
+        return render(request, 'blog/post/search.html', context)

@@ -1,4 +1,5 @@
 {% load static %}
+{% load blog_tags %}
 <!DOCTYPE html>
 <html data-pgc-set-master>
     <head>
@@ -56,7 +57,7 @@
                     <!-- Navbar Brand -->
                     <div class="navbar-header d-flex align-items-center justify-content-between">
                         <!-- Navbar Brand -->
-                        <a href="index.html" class="navbar-brand">
+                        <a href="{% url 'blog:post_list' %}" class="navbar-brand">
                             <h5 class="text-light">
                                 Tech<b>Blog</b>
                             </h5>
@@ -75,17 +76,17 @@
                                 <a href="{% url 'blog:post_list' %}" class="nav-link  text-light ">Home</a>
                             </li>
                             <li class="nav-item">
-                                <a href="blog.html" class="nav-link active ">Blog</a>
+                                <a href="{% url 'blog:post_list' %}" class="nav-link active ">Blog</a>
                             </li>
                             <li class="nav-item">
-                                <a href="post.html" class="nav-link text-light ">Post</a>
+                                <a href="{% url 'blog:post_list' %}" class="nav-link text-light ">Post</a>
                             </li>
                             <li class="nav-item">
                                 <a href="{% url 'blog:contact_us' %}" class="nav-link text-light">Contact</a>
                             </li>
                         </ul>
                         <div class="navbar-text">
-                            <a href="#" class="search-btn"><i class="icon-search-1 text-light"></i></a>
+                            <a href="" class="search-btn"><i class="icon-search-1 text-light"></i></a>
                         </div>
                     </div>
                 </div>
@@ -125,57 +126,31 @@
                     <!-- Widget [Latest Posts Widget]        -->
                     <div class="widget latest-posts bg-light border-0">
                         <header>
-                            <h3 class="h6">Latest Posts</h3>
+                            <h3 class="h6">Popular Posts</h3>
                         </header>
                         <div class="blog-posts">
-                            <a href="#"> <div class="item d-flex align-items-center">
+                            {% get_most_commented_posts as most_commented_posts %}
+                            {% for post in most_commented_posts %}
+                            <a href="{{ post.get_absolute_url }}"> 
+                            	<div class="item d-flex align-items-center">
                                     <div class="image">
-                                        <img src="img/small-thumbnail-1.jpg" alt="..." class="img-fluid">
+                                        <img src="{% static 'img/small-thumbnail-techblog-1.jpg' %}" alt="{{ post.title }}" class="img-fluid">
                                     </div>
                                     <div class="title">
-                                        <strong>Alberto Savoia Can Teach You About</strong>
+                                        <strong>{{ post.title }}</strong>
                                         <div class="d-flex align-items-center">
                                             <div class="views">
                                                 <i class="icon-eye"></i> 500
                                             </div>
+                                            {% total_comments post.id as all_comments %}
                                             <div class="comments">
-                                                <i class="icon-comment"></i>12
+                                                <i class="icon-comment"></i>{{ all_comments}}
                                             </div>
                                         </div>
                                     </div>
-                                </div></a>
-                            <a href="#"> <div class="item d-flex align-items-center">
-                                    <div class="image">
-                                        <img src="img/small-thumbnail-2.jpg" alt="..." class="img-fluid">
-                                    </div>
-                                    <div class="title">
-                                        <strong>Alberto Savoia Can Teach You About</strong>
-                                        <div class="d-flex align-items-center">
-                                            <div class="views">
-                                                <i class="icon-eye"></i> 500
-                                            </div>
-                                            <div class="comments">
-                                                <i class="icon-comment"></i>12
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div></a>
-                            <a href="#"> <div class="item d-flex align-items-center">
-                                    <div class="image">
-                                        <img src="img/small-thumbnail-3.jpg" alt="..." class="img-fluid">
-                                    </div>
-                                    <div class="title">
-                                        <strong>Alberto Savoia Can Teach You About</strong>
-                                        <div class="d-flex align-items-center">
-                                            <div class="views">
-                                                <i class="icon-eye"></i> 500
-                                            </div>
-                                            <div class="comments">
-                                                <i class="icon-comment"></i>12
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div></a>
+                                </div>
+                            </a>
+                            {% endfor %}
                         </div>
                     </div>
                     <!-- Widget [Categories Widget]-->
@@ -273,7 +248,7 @@
                                     </div>
                                     <div class="title">
                                         <strong>Hotels for all budgets</strong>
-                                        <span class="date last-meta">October 26, 2016</span>
+                                        <span class="date last-meta">October 16, 2020</span>
                                     </div>
                                 </div></a>
                             <a href="#"> <div class="post d-flex align-items-center">
@@ -281,8 +256,8 @@
                                         <img src="img/small-thumbnail-2.jpg" alt="..." class="img-fluid">
                                     </div>
                                     <div class="title">
-                                        <strong>Great street atrs in London</strong>
-                                        <span class="date last-meta">October 26, 2016</span>
+                                        <strong>Great street atrs in Uganda</strong>
+                                        <span class="date last-meta">October 16, 2020</span>
                                     </div>
                                 </div></a>
                             <a href="#"> <div class="post d-flex align-items-center">
@@ -290,8 +265,8 @@
                                         <img src="img/small-thumbnail-3.jpg" alt="..." class="img-fluid">
                                     </div>
                                     <div class="title">
-                                        <strong>Best coffee shops in Sydney</strong>
-                                        <span class="date last-meta">October 26, 2016</span>
+                                        <strong>Best coffee shops in Kampala</strong>
+                                        <span class="date last-meta">October 16, 2020</span>
                                     </div>
                                 </div></a>
                         </div>

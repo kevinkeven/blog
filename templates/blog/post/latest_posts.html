@@ -1,0 +1,20 @@
+{% for post in latest_posts %}
+							<a href="#"> <div class="item d-flex align-items-center">
+                                    <div class="image">
+                                        <img src="img/small-thumbnail-1.jpg" alt="..." class="img-fluid">
+                                    </div>
+                                    <div class="title">
+                                        <strong>{{ post.title }}</strong>
+                                        <div class="d-flex align-items-center">
+                                            <div class="views">
+                                                <i class="icon-eye"></i> 500
+                                            </div>
+                                            {% total_comments post.id as all_comments %}
+                                            <div class="comments">
+                                                <i class="icon-comment"></i>{{ all_comments }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+{% endfor %}

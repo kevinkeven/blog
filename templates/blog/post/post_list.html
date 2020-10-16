@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load blog_tags %}
 {% load static %}
 
 {% block content %}
@@ -22,15 +23,16 @@
                                     <p class="text-muted">{{ post.body|truncatewords:10 }}</p>
                                     <footer class="post-footer d-flex align-items-center">
                                         <a href="#" class="author d-flex align-items-center flex-wrap"> <div class="avatar">
-                                                <img src="img/avatar-3.jpg" alt="..." class="img-fluid">
+                                                <img src="{% static 'img/avatar.png' %}" alt="{{ post.author }}" class="img-fluid" width="200">
                                             </div> <div class="title">
                                                 <span>{{ post.author }}</span>
                                             </div></a>
                                         <div class="date">
                                             <i class="icon-clock"></i> {{ post.publish|timesince }}
                                         </div>
+                                        {% total_comments post.id as all_comments %}
                                         <div class="comments meta-last">
-                                            <i class="icon-comment"></i>12
+                                            <i class="icon-comment"></i>{{ all_comments }}
                                         </div>
                                     </footer>
                                 </div>
