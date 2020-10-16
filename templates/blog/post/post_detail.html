@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block title %}{{ post.title }}{{ block.super }}{% endblock %}
+
+{% block content %}
+				<!-- Latest Posts -->
+                <main class="post blog-post col-lg-12"> 
+                    <div class="container-fluid">
+                        <div class="post-single">
+                            <div class="post-thumbnail">
+                                <img src="{% if post.image %}{{ post.image.url }}{% else %}{% static 'img/blog-post-techblog-1.jpeg' %}{% endif %}" alt="..." class="img-fluid">
+                            </div>
+                            <div class="post-details">
+                                <div class="post-meta d-flex justify-content-between">
+                                    <div class="category">
+                                        <a href="#">Business</a>
+                                        <a href="#">Financial</a>
+                                    </div>
+                                </div>
+                                <h1>{{ post.title }}<a href="#"><i class="fa fa-bookmark-o"></i></a></h1>
+                                <div class="post-footer d-flex align-items-center flex-column flex-sm-row">
+                                    <a href="#" class="author d-flex align-items-center flex-wrap"> <div class="avatar">
+                                            <img src="img/avatar-1.jpg" alt="..." class="img-fluid">
+                                        </div> <div class="title">
+                                            <span>{{ post.author }}</span>
+                                        </div></a>
+                                    <div class="d-flex align-items-center flex-wrap"> 
+                                        <div class="date">
+                                            <i class="icon-clock"></i> {{ post.publish|time:"H\h i\m" }} Ago
+                                        </div>
+                                        <div class="views">
+                                            <i class="icon-eye"></i> 500
+                                        </div>
+                                        <div class="comments meta-last">
+                                            <i class="icon-comment"></i>12
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="post-body">
+                                    <p class="lead">{{ post.body|linebreaks }}.</p>
+                                    <p> <img src="{% static 'img/blog-post-techblog-1.jpeg' %}" alt="..." class="img-fluid"></p>
+                                    <h3>Lorem Ipsum Dolor</h3>
+                                    <p>div Lorem ipsum dolor sit amet, consectetur adipisicing elit. Assumenda temporibus iusto voluptates deleniti similique rerum ducimus sint ex odio saepe. Sapiente quae pariatur ratione quis perspiciatis deleniti accusantium</p>
+                                    <blockquote class="blockquote">
+                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip.</p>
+                                        <footer class="blockquote-footer">Someone famous in
+                                            <cite title="Source Title">Source Title</cite>
+                                        </footer>
+                                    </blockquote>
+                                    {% lorem 3 p %}
+                                </div>
+                                <div class="post-tags">
+                                    {% for tag in post.tags.all %}
+                                    <a href="#" class="tag">{{ tag }}</a>
+                                    {% endfor %}
+                                </div>
+                                <a href="{% url 'blog:share_post' post.slug %}" class="text-primary">Share via email</a>
+                                <div class="posts-nav d-flex justify-content-between align-items-stretch flex-column flex-md-row">
+                                    <a href="#" class="prev-post text-left d-flex align-items-center"> <div class="icon prev">
+                                            <i class="fa fa-angle-left"></i>
+                                        </div> <div class="text">
+                                            <strong class="text-primary">Previous Post </strong>
+                                            <h6>I Bought a Wedding Dress.</h6>
+                                        </div></a>
+                                    <a href="#" class="next-post text-right d-flex align-items-center justify-content-end"> <div class="text">
+                                            <strong class="text-primary">Next Post </strong>
+                                            <h6>I Bought a Wedding Dress.</h6>
+                                        </div> <div class="icon next">
+                                            <i class="fa fa-angle-right"> </i>
+                                        </div></a>
+                                </div>
+                                <div class="post-comments">
+                                    {% with comments.count as total_comments %}
+                                    <header>
+                                        <h3 class="h6">Post Comments<span class="no-of-comments">({{ total_comments }})</span></h3>
+                                    </header>
+                                    {% endwith %}
+                                    {% for comment in comments %}
+                                    <div class="comment shadow p-2 mt-5">
+                                        <div class="comment-header d-flex justify-content-between">
+                                            <div class="user d-flex align-items-center">
+                                                <div class="image">
+                                                    <img src="{% static 'img/avatar.png' %}" alt="..." class="img-fluid rounded-circle">
+                                                </div>
+                                                <div class="title">
+                                                    <strong>{{ comment.name }}</strong>
+                                                    <span class="date">{{ comment.created|date:"M Y" }}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="comment-body">
+                                            <p>{{ comment.body }}.</p>
+                                            {% lorem 1 p %}
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                                <div class="add-comment">
+                                    <header>
+                                        <h3 class="h6">Leave a reply</h3>
+                                    </header>
+                                    <form action="#" class="commenting-form" method="post">
+                                        {% csrf_token %}
+                                        {% crispy form %}
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+{% endblock %}

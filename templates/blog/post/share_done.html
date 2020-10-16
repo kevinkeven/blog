@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}Artical shared successfully {{ block.super }}{% endblock %}
+
+{% block content %}
+				<main class="post blog-post col-lg-12"> 
+                    <div class="container">
+                        <div class="post-single">
+						 	<div class="add-comment">
+						        <div class="alert alert-success" role="alert">
+								  Articel {{ post.title }} Successfully Shared with "{{ form.cleaned_data.to }}"
+								</div>
+						    </div>
+						</div>
+					</div>
+				</main>
+			{% endif %}
+{% endblock %}

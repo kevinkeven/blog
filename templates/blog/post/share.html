@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}Share "{{ post.title }}" {{ block.super }}{% endblock %}
+
+{% block content %}
+				<main class="post blog-post col-lg-11 bg-light shadow-sm"> 
+                    <div class="container">
+                    	<header>
+						    <h3 class="h6">Share "{{ post.title }}"</h3>
+						</header>
+                        <div class="post-single">
+						 	<div class="add-comment">
+						        <form action="" class="commenting-form" method="post">
+						        	{% csrf_token %}
+						            {% crispy form %}
+						        </form>
+						    </div>
+						</div>
+					</div>
+				</main>
+{% endblock %}
